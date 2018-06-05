@@ -1,0 +1,33 @@
+{
+	"name": "node-cuda-work-client",
+	"version": "0.0.1",
+	"description": "A configurable client that utilizes NVIDIA CUDA processing units to perform various tasks issued by a work server.",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js",
+		"build": "babel src -d dist -q",
+		"watch": "babel src -d dist -w",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "tsmith",
+	"license": "ISC",
+	"dependencies": {
+		"bluebird": "^3.5.1",
+		"config": "^1.30.0",
+		"fs-extra": "^6.0.1",
+		"lodash": "^4.17.10",
+		"lowdb": "^1.0.0",
+		"moment": "^2.22.2",
+		"socket.io-client": "^2.1.1",
+		"winston": "^2.4.2"
+	},
+	"devDependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-eslint": "^8.2.3",
+		"babel-preset-env": "^1.7.0",
+		"eslint": "^4.19.1",
+		"eslint-config-walmart": "^2.2.1",
+		"eslint-plugin-filenames": "^1.2.0",
+		"eslint-plugin-import": "^2.12.0"
+	}
+}

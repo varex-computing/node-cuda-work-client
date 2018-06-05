@@ -1,0 +1,14 @@
+{
+	"logging": {
+		"filename": ""
+	},
+	"paths": {
+		"nvsmi": "\"C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe\""
+	},
+	"network": {
+		"serverUri": "localhost:3000"
+	},
+	"plugins": [
+		
+	]
+}
