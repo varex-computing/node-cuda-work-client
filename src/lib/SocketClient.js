@@ -61,6 +61,11 @@ const SocketClient = class SocketClient {
 			_this._connected = true;
 		});
 
+		socket.on(`disconnect`, () => {
+			Logger.info(`Lost connection to server`);
+			_this._connected = false;
+		});
+
 		socket.on(`work`, (workDataString) => {
 			Logger.debug(`Received new work request from server`);
 			const workRequest = WorkRequest.fromString(workDataString);
