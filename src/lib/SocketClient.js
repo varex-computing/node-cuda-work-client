@@ -34,6 +34,15 @@ const SocketClient = class SocketClient {
 		this._emitter.addListener(`work-received`, value);
 	}
 
+	set DeviceInfoRequestHandler(value) {
+		if (typeof value !== `function`) {
+			throw new Error(`DeviceInfoRequestHandler must be of type function, but got "${typeof value}"`);
+		}
+
+		this._emitter.removeAllListeners(`device-info-requested`);
+		this._emitter.addListener(`device-info-requested`, value);
+	}
+
 	////////////////////
 	// PUBLIC METHODS //
 	////////////////////
@@ -44,6 +53,21 @@ const SocketClient = class SocketClient {
 		
 		_this._socket = io(networkOptions.serverUri);
 		_this._setSocketHandlers();
+	}
+
+	send(eventName, data) {
+		// preserve context
+		const _this = this;
+		
+		if (_this.Connected !== true) {
+			throw new Error(`Socket is not connected and is unable to send message to server.`);
+		}
+
+		if (data != null) {
+			_this._socket.emit(eventName, data);
+		} else {
+			_this._socket.emit(eventName);
+		}
 	}
 
 	////////////////////
@@ -64,6 +88,11 @@ const SocketClient = class SocketClient {
 		socket.on(`disconnect`, () => {
 			Logger.info(`Lost connection to server`);
 			_this._connected = false;
+		});
+
+		socket.on(`device-request`, () => {
+			Logger.info(`Server requesting device info`);
+			_this._emitter.emit(`device-info-requested`);
 		});
 
 		socket.on(`work`, (workDataString) => {

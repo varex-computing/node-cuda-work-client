@@ -1,5 +1,6 @@
 //Dependencies
 import _ from 'lodash';
+import Promise from 'bluebird';
 import config from 'config';
 import Logger from 'winston';
 
@@ -12,7 +13,7 @@ const PLUGIN_START = `node-cuda-`;
 const PLUGIN_END = `-client-plugin`;
 
 let socket = null;
-let devices;
+let devices = [];
 const plugins = {};
 
 const App = class App {
@@ -40,17 +41,12 @@ const App = class App {
 		//Load plugins
 		App._loadPlugins();
 
-		socket = new SocketClient();
-		socket.connect()
-			.then(() => {
-				socket.WorkHandler = App._handleWorkReceived;
-			});
-
 		return Promise.join(
 			NVSMI.getDeviceList(),
 		)
 			.then(([deviceList]) => {
 				devices = deviceList;
+				App._createSocket();
 			})
 			.catch((err) => {
 				Logger.error(`Encountered an error initializing the client`);
@@ -74,6 +70,18 @@ const App = class App {
 		});
 
 		Logger.info(`Loaded ${enabledPlugins.length} plugins`);
+	}
+
+	static _createSocket() {
+		socket = new SocketClient();
+		socket.connect();
+		socket.WorkHandler = App._handleWorkReceived;
+		socket.DeviceInfoRequestHandler = App._handleDeviceRequest;
+	}
+
+	static _handleDeviceRequest() {
+		Logger.info(`Sending device data to server...`);
+		socket.send(`device-info`, devices.map((device) => device.getStatus()));
 	}
 
 	static _handleWorkReceived(workRequest) {
