@@ -101,6 +101,22 @@ const DisplayDevice = class DisplayDevice {
 		}
 	}
 
+	getStatus() {
+		// preserve context
+		const _this = this;
+
+		let status = `idle`;
+		if (_this._process != null) {
+			status = `working`;
+		}
+		
+		return {
+			model: _this._model,
+			status,
+			lastWorkChange: _this._lastWorkChange,
+		};
+	}
+
 	////////////////////
 	// PRIVATE METHODS//
 	////////////////////
