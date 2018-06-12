@@ -6,7 +6,7 @@
 		"nvsmi": "\"C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe\""
 	},
 	"network": {
-		"serverUri": "localhost:3000"
+		"serverUri": "http://localhost:8080"
 	},
 	"plugins": [
 		
