@@ -1,6 +1,7 @@
 //Dependencies
 import _ from 'lodash';
 import Promise from 'bluebird';
+import Logger from 'winston';
 import config from 'config';
 import { exec } from 'child_process';
 
@@ -29,6 +30,10 @@ const NVSMI = class NVSMI {
 				const formattedDevices = rawDeviceInfoStrings.map((deviceInfoString) => new DisplayDevice(NVSMI._parseInfoString(deviceInfoString)));
 
 				return Promise.resolve(formattedDevices);
+			})
+			.catch((err) => {
+				Logger.error(`Encountered an error getting CUDA device list`);
+				return Promise.reject(err);
 			});
 	}
 
